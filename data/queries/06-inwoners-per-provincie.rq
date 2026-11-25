@@ -1,0 +1,10 @@
+# Aggregatie: totaal inwoners van de gemeenten in de graaf, per provincie.
+PREFIX sem:  <https://mpparsley.github.io/hello-semantica/def#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?provincie (COUNT(?g) AS ?gemeenten) (SUM(?n) AS ?inwoners) WHERE {
+  ?g a sem:Gemeente ; sem:inwoners ?n ; sem:ligtIn ?p .
+  ?p a sem:Provincie ; rdfs:label ?provincie .
+}
+GROUP BY ?provincie
+ORDER BY DESC(?inwoners)

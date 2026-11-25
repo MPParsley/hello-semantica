@@ -1,0 +1,12 @@
+# Aan welke provincies grenst de provincie Namen?
+# Sommige grenzen staan alleen als "X grenstAan Namen" in de data.
+# sem:grenstAan is symmetrisch, dus de redeneerder vult de andere richting in.
+PREFIX sem:  <https://mpparsley.github.io/hello-semantica/def#>
+PREFIX kg:   <https://mpparsley.github.io/hello-semantica/id/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?buur ?naam WHERE {
+  kg:namen-provincie sem:grenstAan ?buur .
+  ?buur rdfs:label ?naam .
+}
+ORDER BY ?naam

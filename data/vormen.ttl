@@ -1,0 +1,89 @@
+@prefix sem:  <https://mpparsley.github.io/hello-semantica/def#> .
+@prefix vorm: <https://mpparsley.github.io/hello-semantica/vormen#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# ---------------------------------------------------------------------------
+# SHACL-vormen: regels waaraan de data moet voldoen. De build faalt als de
+# kennisgraaf een van deze regels schendt.
+# ---------------------------------------------------------------------------
+
+vorm:LabelVorm a sh:NodeShape ;
+    rdfs:label "Elk ding heeft precies één Nederlands label"@nl ;
+    sh:targetClass sem:Bestuurseenheid, sem:Waterloop, sem:Persoon ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:qualifiedValueShape [ sh:languageIn ( "nl" ) ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "Er moet precies één label in het Nederlands zijn."@nl ;
+    ] .
+
+vorm:GemeenteVorm a sh:NodeShape ;
+    rdfs:label "Gemeente"@nl ;
+    sh:targetClass sem:Gemeente ;
+    sh:property [
+        sh:path sem:inwoners ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 0 ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Een gemeente heeft precies één positief geheel aantal inwoners."@nl ;
+    ] ;
+    sh:property [
+        sh:path sem:ligtIn ;
+        sh:minCount 1 ;
+        sh:or ( [ sh:class sem:Provincie ] [ sh:class sem:Gewest ] ) ;
+        sh:message "Een gemeente ligt in een provincie of (in Brussel) rechtstreeks in een gewest."@nl ;
+    ] .
+
+vorm:ProvincieVorm a sh:NodeShape ;
+    rdfs:label "Provincie"@nl ;
+    sh:targetClass sem:Provincie ;
+    sh:property [
+        sh:path sem:heeftHoofdstad ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class sem:Stad ;
+        sh:message "Een provincie heeft precies één hoofdstad, en die is een stad."@nl ;
+    ] ;
+    sh:property [
+        sh:path sem:ligtIn ;
+        sh:minCount 1 ;
+        sh:class sem:Gewest ;
+        sh:message "Een provincie ligt in een gewest."@nl ;
+    ] .
+
+vorm:RivierVorm a sh:NodeShape ;
+    rdfs:label "Rivier"@nl ;
+    sh:targetClass sem:Rivier ;
+    sh:property [
+        sh:path sem:mondtUitIn ;
+        sh:maxCount 1 ;
+        sh:class sem:Waterloop ;
+        sh:message "Een rivier mondt uit in hoogstens één andere waterloop."@nl ;
+    ] ;
+    sh:property [
+        sh:path sem:stroomtDoor ;
+        sh:class sem:Plaats ;
+        sh:message "Een rivier stroomt door plaatsen."@nl ;
+    ] .
+
+vorm:PersoonVorm a sh:NodeShape ;
+    rdfs:label "Persoon"@nl ;
+    sh:targetClass sem:Persoon ;
+    sh:property [
+        sh:path sem:geborenIn ;
+        sh:maxCount 1 ;
+        sh:class sem:Gemeente ;
+        sh:message "Een persoon is in hoogstens één gemeente geboren."@nl ;
+    ] ;
+    sh:property [
+        sh:path sem:geboortejaar ;
+        sh:datatype xsd:integer ;
+        sh:maxCount 1 ;
+        sh:minInclusive 1000 ;
+        sh:maxInclusive 2100 ;
+        sh:message "Het geboortejaar is één geheel getal tussen 1000 en 2100."@nl ;
+    ] .

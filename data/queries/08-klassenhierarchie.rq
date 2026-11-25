@@ -1,0 +1,11 @@
+# Een vraag over het schema zelf: hoeveel instanties heeft elke klasse,
+# rechtstreeks beweerd of afgeleid via rdfs:subClassOf?
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+
+SELECT ?klasse (COUNT(DISTINCT ?x) AS ?instanties) WHERE {
+  ?k a owl:Class ; rdfs:label ?klasse .
+  OPTIONAL { ?x a ?k }
+}
+GROUP BY ?klasse
+ORDER BY DESC(?instanties)

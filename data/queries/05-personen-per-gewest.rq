@@ -1,0 +1,18 @@
+# In welk gewest werden de personen in de graaf geboren?
+# Combineert geboorteplaats met de afgeleide transitieve ligging.
+PREFIX sem:  <https://mpparsley.github.io/hello-semantica/def#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?persoon ?beroep ?jaar ?geboorteplaats ?gewest WHERE {
+  ?p a sem:Persoon ;
+     rdfs:label ?persoon ;
+     sem:beroep ?beroep ;
+     sem:geboortejaar ?jaar ;
+     sem:geborenIn ?g .
+  ?g rdfs:label ?geboorteplaats ;
+     sem:ligtIn ?gw .
+  ?gw a sem:Gewest ;
+      rdfs:label ?gewest .
+  FILTER(lang(?geboorteplaats) = "nl" && lang(?gewest) = "nl")
+}
+ORDER BY ?jaar

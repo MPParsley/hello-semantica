@@ -1,0 +1,289 @@
+@prefix sem:  <https://mpparsley.github.io/hello-semantica/def#> .
+@prefix kg:   <https://mpparsley.github.io/hello-semantica/id/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# ---------------------------------------------------------------------------
+# Kennisgraaf: de feiten. Bewust minimaal beweerd -- alles wat logisch volgt
+# (hoofdsteden, transitieve ligging, symmetrische grenzen, stroomgebieden)
+# laten we de redeneerder afleiden.
+# Inwonersaantallen zijn afgeronde benaderingen, enkel voor demonstratie.
+# ---------------------------------------------------------------------------
+
+kg:belgie a sem:Land ;
+    rdfs:label "België"@nl, "Belgique"@fr, "Belgium"@en ;
+    sem:heeftHoofdstad kg:brussel .
+
+kg:vlaanderen a sem:Gewest ;
+    rdfs:label "Vlaams Gewest"@nl, "Région flamande"@fr ;
+    sem:ligtIn kg:belgie ;
+    sem:heeftHoofdstad kg:brussel .
+
+kg:wallonie a sem:Gewest ;
+    rdfs:label "Waals Gewest"@nl, "Région wallonne"@fr ;
+    sem:ligtIn kg:belgie ;
+    sem:heeftHoofdstad kg:namen .
+
+kg:brussels-gewest a sem:Gewest ;
+    rdfs:label "Brussels Hoofdstedelijk Gewest"@nl, "Région de Bruxelles-Capitale"@fr ;
+    sem:ligtIn kg:belgie ;
+    sem:heeftHoofdstad kg:brussel .
+
+kg:antwerpen-provincie a sem:Provincie ;
+    rdfs:label "Provincie Antwerpen"@nl ;
+    sem:ligtIn kg:vlaanderen ;
+    sem:heeftHoofdstad kg:antwerpen .
+
+kg:limburg a sem:Provincie ;
+    rdfs:label "Provincie Limburg"@nl ;
+    sem:ligtIn kg:vlaanderen ;
+    sem:heeftHoofdstad kg:hasselt .
+
+kg:oost-vlaanderen a sem:Provincie ;
+    rdfs:label "Provincie Oost-Vlaanderen"@nl ;
+    sem:ligtIn kg:vlaanderen ;
+    sem:heeftHoofdstad kg:gent .
+
+kg:west-vlaanderen a sem:Provincie ;
+    rdfs:label "Provincie West-Vlaanderen"@nl ;
+    sem:ligtIn kg:vlaanderen ;
+    sem:heeftHoofdstad kg:brugge .
+
+kg:vlaams-brabant a sem:Provincie ;
+    rdfs:label "Provincie Vlaams-Brabant"@nl ;
+    sem:ligtIn kg:vlaanderen ;
+    sem:heeftHoofdstad kg:leuven .
+
+kg:henegouwen a sem:Provincie ;
+    rdfs:label "Provincie Henegouwen"@nl ;
+    sem:ligtIn kg:wallonie ;
+    sem:heeftHoofdstad kg:bergen .
+
+kg:luik-provincie a sem:Provincie ;
+    rdfs:label "Provincie Luik"@nl ;
+    sem:ligtIn kg:wallonie ;
+    sem:heeftHoofdstad kg:luik .
+
+kg:luxemburg a sem:Provincie ;
+    rdfs:label "Provincie Luxemburg"@nl ;
+    sem:ligtIn kg:wallonie ;
+    sem:heeftHoofdstad kg:aarlen .
+
+kg:namen-provincie a sem:Provincie ;
+    rdfs:label "Provincie Namen"@nl ;
+    sem:ligtIn kg:wallonie ;
+    sem:heeftHoofdstad kg:namen .
+
+kg:waals-brabant a sem:Provincie ;
+    rdfs:label "Provincie Waals-Brabant"@nl ;
+    sem:ligtIn kg:wallonie ;
+    sem:heeftHoofdstad kg:waver .
+
+kg:antwerpen a sem:Stad ;
+    rdfs:label "Antwerpen"@nl ;
+    sem:ligtIn kg:antwerpen-provincie ;
+    sem:inwoners 536000 .
+
+kg:mechelen a sem:Stad ;
+    rdfs:label "Mechelen"@nl, "Malines"@fr ;
+    sem:ligtIn kg:antwerpen-provincie ;
+    sem:inwoners 88000 .
+
+kg:gent a sem:Stad ;
+    rdfs:label "Gent"@nl, "Gand"@fr ;
+    sem:ligtIn kg:oost-vlaanderen ;
+    sem:inwoners 265000 .
+
+kg:aalst a sem:Stad ;
+    rdfs:label "Aalst"@nl, "Alost"@fr ;
+    sem:ligtIn kg:oost-vlaanderen ;
+    sem:inwoners 89000 .
+
+kg:brugge a sem:Stad ;
+    rdfs:label "Brugge"@nl, "Bruges"@fr ;
+    sem:ligtIn kg:west-vlaanderen ;
+    sem:inwoners 119000 .
+
+kg:kortrijk a sem:Stad ;
+    rdfs:label "Kortrijk"@nl, "Courtrai"@fr ;
+    sem:ligtIn kg:west-vlaanderen ;
+    sem:inwoners 79000 .
+
+kg:oostende a sem:Stad ;
+    rdfs:label "Oostende"@nl, "Ostende"@fr ;
+    sem:ligtIn kg:west-vlaanderen ;
+    sem:inwoners 72000 .
+
+kg:leuven a sem:Stad ;
+    rdfs:label "Leuven"@nl, "Louvain"@fr ;
+    sem:ligtIn kg:vlaams-brabant ;
+    sem:inwoners 102000 .
+
+kg:hasselt a sem:Stad ;
+    rdfs:label "Hasselt"@nl ;
+    sem:ligtIn kg:limburg ;
+    sem:inwoners 80000 .
+
+kg:bilzen a sem:Stad ;
+    rdfs:label "Bilzen"@nl ;
+    sem:ligtIn kg:limburg ;
+    sem:inwoners 33000 .
+
+kg:bergen a sem:Stad ;
+    rdfs:label "Bergen"@nl, "Mons"@fr ;
+    sem:ligtIn kg:henegouwen ;
+    sem:inwoners 96000 .
+
+kg:charleroi a sem:Stad ;
+    rdfs:label "Charleroi"@nl ;
+    sem:ligtIn kg:henegouwen ;
+    sem:inwoners 202000 .
+
+kg:doornik a sem:Stad ;
+    rdfs:label "Doornik"@nl, "Tournai"@fr ;
+    sem:ligtIn kg:henegouwen ;
+    sem:inwoners 69000 .
+
+kg:luik a sem:Stad ;
+    rdfs:label "Luik"@nl, "Liège"@fr ;
+    sem:ligtIn kg:luik-provincie ;
+    sem:inwoners 195000 .
+
+kg:namen a sem:Stad ;
+    rdfs:label "Namen"@nl, "Namur"@fr ;
+    sem:ligtIn kg:namen-provincie ;
+    sem:inwoners 113000 .
+
+kg:dinant a sem:Stad ;
+    rdfs:label "Dinant"@nl ;
+    sem:ligtIn kg:namen-provincie ;
+    sem:inwoners 13000 .
+
+kg:aarlen a sem:Stad ;
+    rdfs:label "Aarlen"@nl, "Arlon"@fr ;
+    sem:ligtIn kg:luxemburg ;
+    sem:inwoners 30000 .
+
+kg:waver a sem:Stad ;
+    rdfs:label "Waver"@nl, "Wavre"@fr ;
+    sem:ligtIn kg:waals-brabant ;
+    sem:inwoners 35000 .
+
+kg:brussel a sem:Stad ;
+    rdfs:label "Brussel"@nl, "Bruxelles"@fr ;
+    sem:ligtIn kg:brussels-gewest ;
+    sem:inwoners 196000 .
+
+kg:schaarbeek a sem:Gemeente ;
+    rdfs:label "Schaarbeek"@nl, "Schaerbeek"@fr ;
+    sem:ligtIn kg:brussels-gewest ;
+    sem:inwoners 133000 .
+
+kg:etterbeek a sem:Gemeente ;
+    rdfs:label "Etterbeek"@nl ;
+    sem:ligtIn kg:brussels-gewest ;
+    sem:inwoners 48000 .
+
+kg:elsene a sem:Gemeente ;
+    rdfs:label "Elsene"@nl, "Ixelles"@fr ;
+    sem:ligtIn kg:brussels-gewest ;
+    sem:inwoners 87000 .
+
+# Grenzen worden maar in één richting beweerd; sem:grenstAan is symmetrisch.
+kg:antwerpen-provincie sem:grenstAan kg:limburg .
+kg:antwerpen-provincie sem:grenstAan kg:vlaams-brabant .
+kg:antwerpen-provincie sem:grenstAan kg:oost-vlaanderen .
+kg:oost-vlaanderen sem:grenstAan kg:west-vlaanderen .
+kg:oost-vlaanderen sem:grenstAan kg:henegouwen .
+kg:oost-vlaanderen sem:grenstAan kg:vlaams-brabant .
+kg:west-vlaanderen sem:grenstAan kg:henegouwen .
+kg:vlaams-brabant sem:grenstAan kg:limburg .
+kg:vlaams-brabant sem:grenstAan kg:waals-brabant .
+kg:vlaams-brabant sem:grenstAan kg:luik-provincie .
+kg:vlaams-brabant sem:grenstAan kg:henegouwen .
+kg:limburg sem:grenstAan kg:luik-provincie .
+kg:henegouwen sem:grenstAan kg:waals-brabant .
+kg:henegouwen sem:grenstAan kg:namen-provincie .
+kg:waals-brabant sem:grenstAan kg:namen-provincie .
+kg:waals-brabant sem:grenstAan kg:luik-provincie .
+kg:namen-provincie sem:grenstAan kg:luik-provincie .
+kg:namen-provincie sem:grenstAan kg:luxemburg .
+kg:luik-provincie sem:grenstAan kg:luxemburg .
+
+kg:schelde a sem:Rivier ;
+    rdfs:label "Schelde"@nl, "Escaut"@fr ;
+    sem:stroomtDoor kg:doornik, kg:gent, kg:antwerpen .
+
+kg:maas a sem:Rivier ;
+    rdfs:label "Maas"@nl, "Meuse"@fr ;
+    sem:stroomtDoor kg:dinant, kg:namen, kg:luik .
+
+kg:leie a sem:Rivier ;
+    rdfs:label "Leie"@nl, "Lys"@fr ;
+    sem:mondtUitIn kg:schelde ;
+    sem:stroomtDoor kg:kortrijk, kg:gent .
+
+kg:rupel a sem:Rivier ;
+    rdfs:label "Rupel"@nl ;
+    sem:mondtUitIn kg:schelde .
+
+kg:dijle a sem:Rivier ;
+    rdfs:label "Dijle"@nl, "Dyle"@fr ;
+    sem:mondtUitIn kg:rupel ;
+    sem:stroomtDoor kg:waver, kg:leuven, kg:mechelen .
+
+kg:zenne a sem:Rivier ;
+    rdfs:label "Zenne"@nl, "Senne"@fr ;
+    sem:mondtUitIn kg:dijle ;
+    sem:stroomtDoor kg:brussel .
+
+kg:samber a sem:Rivier ;
+    rdfs:label "Samber"@nl, "Sambre"@fr ;
+    sem:mondtUitIn kg:maas ;
+    sem:stroomtDoor kg:charleroi, kg:namen .
+
+kg:dender a sem:Rivier ;
+    rdfs:label "Dender"@nl, "Dendre"@fr ;
+    sem:mondtUitIn kg:schelde ;
+    sem:stroomtDoor kg:aalst .
+
+kg:georges-simenon a sem:Persoon ;
+    rdfs:label "Georges Simenon"@nl ;
+    sem:beroep "schrijver"@nl ;
+    sem:geboortejaar 1903 ;
+    sem:geborenIn kg:luik .
+
+kg:adolphe-sax a sem:Persoon ;
+    rdfs:label "Adolphe Sax"@nl ;
+    sem:beroep "instrumentenbouwer"@nl ;
+    sem:geboortejaar 1814 ;
+    sem:geborenIn kg:dinant .
+
+kg:herge a sem:Persoon ;
+    rdfs:label "Hergé"@nl ;
+    sem:beroep "striptekenaar"@nl ;
+    sem:geboortejaar 1907 ;
+    sem:geborenIn kg:etterbeek .
+
+kg:jacques-brel a sem:Persoon ;
+    rdfs:label "Jacques Brel"@nl ;
+    sem:beroep "zanger"@nl ;
+    sem:geboortejaar 1929 ;
+    sem:geborenIn kg:schaarbeek .
+
+kg:audrey-hepburn a sem:Persoon ;
+    rdfs:label "Audrey Hepburn"@nl ;
+    sem:beroep "actrice"@nl ;
+    sem:geboortejaar 1929 ;
+    sem:geborenIn kg:elsene .
+
+kg:kim-clijsters a sem:Persoon ;
+    rdfs:label "Kim Clijsters"@nl ;
+    sem:beroep "tennisster"@nl ;
+    sem:geboortejaar 1983 ;
+    sem:geborenIn kg:bilzen .
+
+kg:cesar-franck a sem:Persoon ;
+    rdfs:label "César Franck"@nl ;
+    sem:beroep "componist"@nl ;
+    sem:geboortejaar 1822 ;
+    sem:geborenIn kg:luik .

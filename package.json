@@ -1,0 +1,12 @@
+{
+  "name": "hello-semantica",
+  "private": true,
+  "description": "Browserbibliotheken voor de Hello Semantica-demonstrator",
+  "dependencies": {
+    "cytoscape": "3.33.1",
+    "oxigraph": "0.5.13"
+  },
+  "scripts": {
+    "test": "node --test tests/queries.test.mjs"
+  }
+}

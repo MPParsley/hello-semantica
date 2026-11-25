@@ -1,0 +1,14 @@
+# Welke rivieren behoren tot het stroomgebied van de Schelde?
+# De Zenne mondt uit in de Dijle, de Dijle in de Rupel, de Rupel in de Schelde.
+# sem:mondtUitIn is een subeigenschap van het transitieve
+# sem:behoortTotStroomgebiedVan.
+PREFIX sem:  <https://mpparsley.github.io/hello-semantica/def#>
+PREFIX kg:   <https://mpparsley.github.io/hello-semantica/id/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?rivier ?naam WHERE {
+  ?rivier sem:behoortTotStroomgebiedVan kg:schelde ;
+          rdfs:label ?naam .
+  FILTER(lang(?naam) = "nl")
+}
+ORDER BY ?naam

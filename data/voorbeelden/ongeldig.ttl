@@ -1,0 +1,20 @@
+@prefix sem:  <https://mpparsley.github.io/hello-semantica/def#> .
+@prefix kg:   <https://mpparsley.github.io/hello-semantica/id/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Opzettelijk foute data. De build controleert dat SHACL elke fout vindt
+# en publiceert het rapport als voorbeeld.
+
+kg:spookstad a sem:Stad ;
+    rdfs:label "Spookstad"@nl, "Geisterstadt"@nl ;   # twee Nederlandse labels
+    sem:inwoners -40 ;                               # negatief
+    sem:ligtIn kg:schelde .                          # een rivier, geen provincie
+
+kg:provincie-zonder-hoofdstad a sem:Provincie ;
+    rdfs:label "Provincie Nergensland"@nl ;
+    sem:ligtIn kg:vlaanderen .                       # hoofdstad ontbreekt
+
+kg:tijdreiziger a sem:Persoon ;
+    rdfs:label "Tijdreiziger"@nl ;
+    sem:geboortejaar "volgend jaar" ;                # geen geheel getal
+    sem:geborenIn kg:gent, kg:brugge .               # twee geboorteplaatsen

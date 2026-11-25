@@ -1,0 +1,128 @@
+@prefix sem:  <https://mpparsley.github.io/hello-semantica/def#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+
+# ---------------------------------------------------------------------------
+# Ontologie: de woordenschat (klassen en eigenschappen) van de kennisgraaf.
+# Elk axioma hieronder levert bij redeneren nieuwe, afgeleide feiten op.
+# ---------------------------------------------------------------------------
+
+<https://mpparsley.github.io/hello-semantica/def>
+    a owl:Ontology ;
+    rdfs:label "Hello Semantica-ontologie"@nl ;
+    dct:description "Een kleine ontologie over Belgische bestuurseenheden, rivieren en personen, gemaakt om semantische technologie te demonstreren."@nl .
+
+# --- Klassen ---------------------------------------------------------------
+
+sem:Plaats a owl:Class ;
+    rdfs:label "Plaats"@nl ;
+    rdfs:comment "Alles wat een geografische ligging heeft."@nl .
+
+sem:Bestuurseenheid a owl:Class ;
+    rdfs:subClassOf sem:Plaats ;
+    rdfs:label "Bestuurseenheid"@nl ;
+    rdfs:comment "Een gebied met een eigen bestuur."@nl .
+
+sem:Land a owl:Class ;
+    rdfs:subClassOf sem:Bestuurseenheid ;
+    rdfs:label "Land"@nl .
+
+sem:Gewest a owl:Class ;
+    rdfs:subClassOf sem:Bestuurseenheid ;
+    rdfs:label "Gewest"@nl .
+
+sem:Provincie a owl:Class ;
+    rdfs:subClassOf sem:Bestuurseenheid ;
+    rdfs:label "Provincie"@nl .
+
+sem:Gemeente a owl:Class ;
+    rdfs:subClassOf sem:Bestuurseenheid ;
+    rdfs:label "Gemeente"@nl .
+
+sem:Stad a owl:Class ;
+    rdfs:subClassOf sem:Gemeente ;
+    rdfs:label "Stad"@nl ;
+    rdfs:comment "Een gemeente met de titel stad."@nl .
+
+sem:Hoofdstad a owl:Class ;
+    rdfs:subClassOf sem:Stad ;
+    rdfs:label "Hoofdstad"@nl ;
+    rdfs:comment "Een stad die hoofdstad is van een bestuurseenheid. Wordt afgeleid, niet beweerd."@nl .
+
+sem:Waterloop a owl:Class ;
+    rdfs:label "Waterloop"@nl .
+
+sem:Rivier a owl:Class ;
+    rdfs:subClassOf sem:Waterloop ;
+    rdfs:label "Rivier"@nl .
+
+sem:Persoon a owl:Class ;
+    rdfs:label "Persoon"@nl .
+
+# --- Objecteigenschappen ---------------------------------------------------
+
+sem:ligtIn a owl:ObjectProperty, owl:TransitiveProperty ;
+    rdfs:label "ligt in"@nl ;
+    rdfs:comment "Transitief: ligt A in B en B in C, dan ligt A ook in C."@nl ;
+    rdfs:domain sem:Plaats ;
+    rdfs:range sem:Bestuurseenheid .
+
+sem:omvat a owl:ObjectProperty, owl:TransitiveProperty ;
+    rdfs:label "omvat"@nl ;
+    owl:inverseOf sem:ligtIn .
+
+sem:heeftHoofdstad a owl:ObjectProperty ;
+    rdfs:label "heeft als hoofdstad"@nl ;
+    rdfs:domain sem:Bestuurseenheid ;
+    rdfs:range sem:Stad ;
+    owl:inverseOf sem:isHoofdstadVan .
+
+sem:isHoofdstadVan a owl:ObjectProperty ;
+    rdfs:label "is hoofdstad van"@nl ;
+    rdfs:comment "Wie hoofdstad is van iets, is een sem:Hoofdstad (via het domein)."@nl ;
+    rdfs:domain sem:Hoofdstad ;
+    rdfs:range sem:Bestuurseenheid .
+
+sem:grenstAan a owl:ObjectProperty, owl:SymmetricProperty ;
+    rdfs:label "grenst aan"@nl ;
+    rdfs:comment "Symmetrisch: grenst A aan B, dan grenst B aan A."@nl ;
+    rdfs:domain sem:Bestuurseenheid ;
+    rdfs:range sem:Bestuurseenheid .
+
+sem:stroomtDoor a owl:ObjectProperty ;
+    rdfs:label "stroomt door"@nl ;
+    rdfs:domain sem:Waterloop ;
+    rdfs:range sem:Plaats .
+
+sem:behoortTotStroomgebiedVan a owl:ObjectProperty, owl:TransitiveProperty ;
+    rdfs:label "behoort tot het stroomgebied van"@nl ;
+    rdfs:domain sem:Waterloop ;
+    rdfs:range sem:Waterloop .
+
+sem:mondtUitIn a owl:ObjectProperty ;
+    rdfs:subPropertyOf sem:behoortTotStroomgebiedVan ;
+    rdfs:label "mondt uit in"@nl ;
+    rdfs:comment "Subeigenschap: mondt A uit in B, dan behoort A tot het stroomgebied van B."@nl .
+
+sem:geborenIn a owl:ObjectProperty ;
+    rdfs:label "geboren in"@nl ;
+    rdfs:domain sem:Persoon ;
+    rdfs:range sem:Gemeente .
+
+# --- Data-eigenschappen ----------------------------------------------------
+
+sem:inwoners a owl:DatatypeProperty ;
+    rdfs:label "aantal inwoners (bij benadering)"@nl ;
+    rdfs:range xsd:integer .
+
+sem:geboortejaar a owl:DatatypeProperty ;
+    rdfs:label "geboortejaar"@nl ;
+    rdfs:domain sem:Persoon ;
+    rdfs:range xsd:integer .
+
+sem:beroep a owl:DatatypeProperty ;
+    rdfs:label "beroep"@nl ;
+    rdfs:domain sem:Persoon .

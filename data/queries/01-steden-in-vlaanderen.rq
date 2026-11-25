@@ -1,0 +1,16 @@
+# Welke gemeenten liggen in het Vlaams Gewest?
+# Er staat nergens "Gent ligt in Vlaanderen": Gent ligt in Oost-Vlaanderen,
+# en Oost-Vlaanderen in Vlaanderen. Omdat sem:ligtIn transitief is, leidt de
+# redeneerder het af. Zet de redeneerder uit en het resultaat is leeg.
+PREFIX sem:  <https://mpparsley.github.io/hello-semantica/def#>
+PREFIX kg:   <https://mpparsley.github.io/hello-semantica/id/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?gemeente ?naam ?inwoners WHERE {
+  ?gemeente a sem:Gemeente ;
+            sem:ligtIn kg:vlaanderen ;
+            rdfs:label ?naam ;
+            sem:inwoners ?inwoners .
+  FILTER(lang(?naam) = "nl")
+}
+ORDER BY DESC(?inwoners)

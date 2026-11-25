@@ -1,0 +1,11 @@
+# CONSTRUCT bouwt een nieuwe graaf: welke rivier raakt welke provincie?
+# Het resultaat is RDF (Turtle), geen tabel.
+PREFIX sem:  <https://mpparsley.github.io/hello-semantica/def#>
+PREFIX kg:   <https://mpparsley.github.io/hello-semantica/id/>
+
+CONSTRUCT { ?rivier sem:stroomtDoor ?provincie }
+WHERE {
+  ?rivier a sem:Rivier ; sem:stroomtDoor ?stad .
+  ?stad sem:ligtIn ?provincie .
+  ?provincie a sem:Provincie .
+}

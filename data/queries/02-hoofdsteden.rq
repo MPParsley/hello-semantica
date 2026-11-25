@@ -1,0 +1,14 @@
+# Welke steden zijn een hoofdstad, en waarvan?
+# sem:Hoofdstad wordt nooit beweerd. Uit "X heeftHoofdstad Y" volgt via
+# owl:inverseOf "Y isHoofdstadVan X", en via rdfs:domain dat Y een sem:Hoofdstad is.
+PREFIX sem:  <https://mpparsley.github.io/hello-semantica/def#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?stad (GROUP_CONCAT(?eenheid; separator=", ") AS ?hoofdstadVan) WHERE {
+  ?s a sem:Hoofdstad ;
+     rdfs:label ?stad ;
+     sem:isHoofdstadVan/rdfs:label ?eenheid .
+  FILTER(lang(?stad) = "nl" && lang(?eenheid) = "nl")
+}
+GROUP BY ?stad
+ORDER BY ?stad

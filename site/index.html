@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hello Semantica</title>
+<meta name="description" content="Een demonstrator voor semantische technologie: RDF, OWL, SHACL en SPARQL, volledig in de browser.">
+<link rel="stylesheet" href="style.css">
+<link rel="alternate" type="text/turtle" href="data/volledig.ttl">
+<link rel="alternate" type="application/ld+json" href="data/volledig.jsonld">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#overzicht">Hello <b>Semantica</b></a>
+  <nav id="tabs" aria-label="Secties">
+    <a href="#overzicht">Overzicht</a>
+    <a href="#verkenner">Verkenner</a>
+    <a href="#sparql">SPARQL</a>
+    <a href="#validatie">Validatie</a>
+    <a href="#data">Data</a>
+  </nav>
+</header>
+
+<main>
+  <!-- OVERZICHT -->
+  <section id="overzicht" class="panel wrap">
+    <h1>Data die zichzelf uitlegt</h1>
+    <p class="lead">Een kleine kennisgraaf over België: gewesten, provincies, gemeenten, rivieren en personen.
+      Het verschil met een gewone database: de <em>betekenis</em> van de data staat mee in de data.
+      Daardoor kan een computer zelf nieuwe feiten afleiden en fouten opsporen.</p>
+
+    <div class="stats" id="stats"></div>
+
+    <h2>Van bestanden naar kennis</h2>
+    <ol class="pipeline">
+      <li><span class="step">1</span><div><b>Ontologie</b><small>OWL: klassen, eigenschappen en hun logica.</small><a href="def/">bekijk</a></div></li>
+      <li><span class="step">2</span><div><b>Feiten</b><small>RDF in Turtle, bewust minimaal.</small><a href="data/kennisgraaf.ttl">bekijk</a></div></li>
+      <li><span class="step">3</span><div><b>Validatie</b><small>SHACL controleert de regels.</small><a href="#validatie">bekijk</a></div></li>
+      <li><span class="step">4</span><div><b>Redeneren</b><small>OWL 2 RL leidt nieuwe feiten af.</small><a href="data/afgeleid.ttl">bekijk</a></div></li>
+      <li><span class="step">5</span><div><b>Publiceren</b><small>GitHub Actions bouwt, GitHub Pages serveert.</small><a href="#data">bekijk</a></div></li>
+    </ol>
+
+    <h2>Wat de redeneerder doet</h2>
+    <div class="cards">
+      <article class="card">
+        <h3>Transitiviteit</h3>
+        <p>De data zegt: <i>Gent ligt in Oost-Vlaanderen</i> en <i>Oost-Vlaanderen ligt in het Vlaams Gewest</i>.
+          Omdat <code>sem:ligtIn</code> transitief is, volgt: <b>Gent ligt in het Vlaams Gewest</b>.</p>
+        <a class="try" href="#sparql/01-steden-in-vlaanderen">Probeer de query →</a>
+      </article>
+      <article class="card">
+        <h3>Inverse en domein</h3>
+        <p>De data zegt: <i>Provincie Luxemburg heeft als hoofdstad Aarlen</i>. Uit de inverse en het domein volgt:
+          <b>Aarlen is een Hoofdstad</b>, zonder dat iemand het intypte.</p>
+        <a class="try" href="#sparql/02-hoofdsteden">Probeer de query →</a>
+      </article>
+      <article class="card">
+        <h3>Symmetrie</h3>
+        <p>De data zegt: <i>Henegouwen grenst aan Namen</i>. Omdat grenzen symmetrisch zijn, volgt:
+          <b>Namen grenst aan Henegouwen</b>.</p>
+        <a class="try" href="#sparql/03-buren-van-namen">Probeer de query →</a>
+      </article>
+      <article class="card">
+        <h3>Subeigenschappen</h3>
+        <p>De Zenne mondt uit in de Dijle, de Dijle in de Rupel, de Rupel in de Schelde.
+          Dus <b>de Zenne behoort tot het stroomgebied van de Schelde</b>.</p>
+        <a class="try" href="#sparql/04-stroomgebied-schelde">Probeer de query →</a>
+      </article>
+    </div>
+
+    <h2>Elke naam is een adres</h2>
+    <p>Elk ding in de graaf heeft een IRI die je kunt openen, zoals
+      <a href="id/antwerpen/"><code>…/id/antwerpen</code></a>. Je krijgt een leesbare pagina met machineleesbare
+      JSON-LD erin, en dezelfde gegevens als Turtle, JSON-LD of N-Triples. Dat is <i>Linked Data</i>.</p>
+  </section>
+
+  <!-- VERKENNER -->
+  <section id="verkenner" class="panel" hidden>
+    <div class="explorer">
+      <div class="graph-wrap">
+        <div class="toolbar">
+          <label><input type="checkbox" id="g-inferred"> afgeleide verbanden tonen</label>
+          <label>Toon
+            <select id="g-filter">
+              <option value="alles">alles</option>
+              <option value="bestuur">bestuurlijke indeling</option>
+              <option value="water">rivieren</option>
+              <option value="grenzen">grenzen tussen provincies</option>
+              <option value="personen">personen</option>
+            </select>
+          </label>
+          <button id="g-fit" type="button">Passend maken</button>
+        </div>
+        <div id="graph" role="img" aria-label="Netwerkweergave van de kennisgraaf"></div>
+        <div class="legend" id="g-legend"></div>
+      </div>
+      <aside id="details" class="details">
+        <p class="muted">Klik op een knoop om te zien wat de graaf erover weet.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- SPARQL -->
+  <section id="sparql" class="panel wrap" hidden>
+    <h1>Bevraag de graaf met SPARQL</h1>
+    <p>De query draait in je browser, in <a href="https://github.com/oxigraph/oxigraph">Oxigraph</a> (gecompileerd naar WebAssembly).
+      Er is geen server: de site is volledig statisch.</p>
+    <div class="qbar">
+      <label>Voorbeeld
+        <select id="q-examples"></select>
+      </label>
+      <label class="switch"><input type="checkbox" id="q-reason" checked> <span>redeneerder aan</span></label>
+    </div>
+    <textarea id="q-text" spellcheck="false" aria-label="SPARQL-query"></textarea>
+    <div class="qbar">
+      <button id="q-run" class="primary" type="button">Uitvoeren <kbd>Ctrl</kbd>+<kbd>Enter</kbd></button>
+      <button id="q-reset" type="button" title="Gooi wijzigingen van INSERT/DELETE weg">Data herladen</button>
+      <span id="q-status" class="muted" role="status"></span>
+    </div>
+    <div id="q-result" class="result"></div>
+    <details class="hint">
+      <summary>Ook schrijven kan</summary>
+      <p>Probeer een SPARQL UPDATE, bijvoorbeeld:</p>
+      <pre>PREFIX sem: &lt;https://mpparsley.github.io/hello-semantica/def#&gt;
+PREFIX kg:  &lt;https://mpparsley.github.io/hello-semantica/id/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+INSERT DATA {
+  kg:ieper a sem:Stad ; rdfs:label "Ieper"@nl ;
+           sem:ligtIn kg:west-vlaanderen ; sem:inwoners 35000 .
+}</pre>
+      <p>De wijziging leeft alleen in je browser. Let op: de redeneerder draait tijdens de build,
+        dus voor Ieper worden in de browser geen nieuwe feiten afgeleid. Vraag je daarna wie in Vlaanderen ligt,
+        dan ontbreekt Ieper. Precies daarom hoort redeneren in de pijplijn.</p>
+    </details>
+  </section>
+
+  <!-- VALIDATIE -->
+  <section id="validatie" class="panel wrap" hidden>
+    <h1>Validatie met SHACL</h1>
+    <p>Een ontologie zegt wat iets <em>betekent</em>. SHACL zegt waaraan data <em>moet voldoen</em>.
+      De GitHub Actions-build valideert de kennisgraaf bij elke push en weigert te publiceren als er een regel geschonden wordt.</p>
+    <div id="v-status"></div>
+    <h2>Een opzettelijk fout voorbeeld</h2>
+    <p>Om te bewijzen dat de regels werken, valideert de build ook dit bestand. Het moet falen, en dat doet het:</p>
+    <div class="split">
+      <pre id="v-bad" class="code"></pre>
+      <div id="v-report"></div>
+    </div>
+    <h2>De regels</h2>
+    <pre id="v-shapes" class="code"></pre>
+  </section>
+
+  <!-- DATA -->
+  <section id="data" class="panel wrap" hidden>
+    <h1>Data en bouwproces</h1>
+    <table class="downloads">
+      <thead><tr><th>Bestand</th><th>Inhoud</th></tr></thead>
+      <tbody>
+        <tr><td><a href="def/">def/</a></td><td>Ontologie als leesbare documentatie</td></tr>
+        <tr><td><a href="data/ontologie.ttl">ontologie.ttl</a></td><td>Klassen en eigenschappen (OWL)</td></tr>
+        <tr><td><a href="data/kennisgraaf.ttl">kennisgraaf.ttl</a></td><td>De beweerde feiten</td></tr>
+        <tr><td><a href="data/afgeleid.ttl">afgeleid.ttl</a></td><td>Alleen wat de redeneerder afleidde</td></tr>
+        <tr><td><a href="data/volledig.ttl">volledig.ttl</a> · <a href="data/volledig.jsonld">.jsonld</a> · <a href="data/volledig.nt">.nt</a></td><td>Ontologie, feiten en afleidingen samen</td></tr>
+        <tr><td><a href="data/vormen.ttl">vormen.ttl</a></td><td>SHACL-vormen</td></tr>
+        <tr><td><a href="data/shacl-rapport.ttl">shacl-rapport.ttl</a></td><td>Validatierapport (zelf ook RDF)</td></tr>
+      </tbody>
+    </table>
+    <h2>Zo wordt de site gebouwd</h2>
+    <ol class="steps">
+      <li>Een push naar <code>main</code> start de workflow <code>.github/workflows/pages.yml</code>.</li>
+      <li>Python installeert <code>rdflib</code>, <code>pySHACL</code> en <code>owlrl</code>; de tests draaien met <code>pytest</code>.</li>
+      <li><code>scripts/build.py</code> valideert, redeneert en genereert de pagina's per resource.</li>
+      <li>npm levert Oxigraph (WebAssembly) en Cytoscape.js; die worden mee gepubliceerd, zonder CDN.</li>
+      <li><code>actions/deploy-pages</code> zet het resultaat op GitHub Pages.</li>
+    </ol>
+    <p class="muted" id="build-info"></p>
+  </section>
+</main>
+
+<footer class="wrap muted">
+  Inwonersaantallen zijn afgeronde benaderingen, enkel bedoeld voor de demonstratie.
+</footer>
+
+<script src="vendor/cytoscape.min.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
